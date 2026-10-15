@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Raw datasets are downloaded manually; do not commit them by default
+data/raw/*
+!data/raw/.gitkeep
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Derived data from real datasets (re-create with src.prepare_meter_data)
+data/processed/*
+!data/processed/.gitkeep
+
+# Local logs and secrets
+*.log
+.env
+.env.*
+!.env.example
+
+# Test and generated files
+.pytest_cache/
+
+# Large datasets — regenerate or download separately
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Large trained models — keep local unless specifically needed
+models/*.joblib
+models/*.pkl
+
+# Generated outputs and local logs
+outputs/*
+!outputs/.gitkeep
+*.log
+
+# Environment and test caches
+.env
+.env.*
+!.env.example
+.venv/
+.pytest_cache/
+__pycache__/
+
+# TankCast runtime files required for the backend
+!models/tankcast_extra_trees_integration_ready.joblib
+!data/processed/hourly_water_demand.csv
+
+# Local backend backups
+backend/*.bak
+backend/main_backup.py

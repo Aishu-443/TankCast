@@ -1,0 +1,10 @@
+# Phase 1 only needs pandas, numpy and pytest.
+# The rest are for later phases; they are listed now so you can install once.
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+joblib>=1.3
+streamlit>=1.30
+plotly>=5.18
+shap>=0.44
+pytest>=7.4

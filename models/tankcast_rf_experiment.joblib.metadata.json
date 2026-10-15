@@ -1,0 +1,97 @@
+{
+  "model_type": "RandomForestRegressor",
+  "created_utc": "2026-10-14T06:25:11+00:00",
+  "data_path": "data/processed/hourly_water_demand_reviewed_clean.csv",
+  "data_sha256": "d4f55c396b25ca078fdaba4f4490c7c79a03a2b593a8163e9da110bbeb46e300",
+  "data_status": "REAL DATA - DAIAD smart water meters (Alicante, Spain), aggregated by TANKCAST",
+  "is_synthetic": false,
+  "source": "DAIAD swm_trialA_1K via https://hardmin.heal-link.gr/dataset/700cde6f-ef69-41f0-8fec-9c3f74ae38d4",
+  "target_column": "litres_per_meter_hour",
+  "date_column": "timestamp",
+  "target_unit": "litres per meter-hour",
+  "frequency": "hourly",
+  "horizon_steps": 24,
+  "test_fraction": 0.2,
+  "feature_names": [
+    "lag_24",
+    "lag_48",
+    "lag_168",
+    "roll_mean_24",
+    "roll_mean_168",
+    "roll_std_24",
+    "hour",
+    "day_of_week",
+    "is_weekend",
+    "month"
+  ],
+  "feature_policy": "Calendar features for the forecast time plus lags/rolling statistics of the target that are at least `horizon` steps old. No temperature or occupancy features are used.",
+  "exogenous_features_used": [],
+  "exogenous_columns_found_in_data": {
+    "temperature": [],
+    "occupancy": []
+  },
+  "preprocessing": {
+    "missing_policy": "missing time steps are left empty; rows lacking any needed history are dropped (no imputation)",
+    "duplicate_timestamp_policy": "averaged",
+    "n_steps": 8759,
+    "n_missing_steps": 37,
+    "n_duplicate_timestamps_averaged": 0,
+    "rows_before_dropping_missing": 8759,
+    "rows_after": 8425,
+    "seasonal_lag_steps": 24
+  },
+  "split": {
+    "method": "chronological (no shuffling)",
+    "train_start": "2016-03-08 00:00:00",
+    "train_end": "2016-12-20 09:00:00",
+    "test_start": "2016-12-20 10:00:00",
+    "test_end": "2017-02-28 22:00:00",
+    "n_train": 6740,
+    "n_test": 1685
+  },
+  "hyperparameters": {
+    "n_estimators": 200,
+    "min_samples_leaf": 3,
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "metrics": {
+    "random_forest": {
+      "mae": 2.6984321738728707,
+      "rmse": 3.5437036142097096
+    },
+    "persistence": {
+      "mae": 3.354066884272997,
+      "rmse": 4.927797476981215
+    }
+  },
+  "mean_test_target": 10.171399821958458,
+  "best_baseline": "persistence",
+  "mae_improvement_over_best_baseline_pct": 19.547454866638322,
+  "baselines_reported": [
+    "persistence"
+  ],
+  "random_forest_beats_all_baselines": true,
+  "metric_explanation": {
+    "MAE": "Mean Absolute Error: the average size of the forecast error, in the target's own unit. Easy to read.",
+    "RMSE": "Root Mean Squared Error: like MAE but squares errors first, so rare large misses count more. RMSE is always >= MAE; a big gap between them means occasional large errors.",
+    "persistence": "Baseline: predicts that demand equals its value `horizon` steps earlier (at a 24-hour horizon this is simply 'same hour yesterday').",
+    "seasonal_naive": "Baseline: predicts the value from the same time in the previous cycle (e.g. same hour yesterday)."
+  },
+  "dataset_limitations": [
+    "Residential households in Spain, not a hostel or an Indian city; usage patterns and climate differ.",
+    "Values are per meter, not per building. Scaling to a hostel needs an explicit, separate assumption.",
+    "If a meter skipped readings, its next 'litres since last reading' may cover several hours but is counted in one hour.",
+    "No temperature or occupancy data is included."
+  ],
+  "limitations": [
+    "Metrics come from ONE chronological test period; they say little about other seasons or conditions.",
+    "The test period was not used for tuning, but only fixed hyper-parameters were tried.",
+    "Predictions are in the dataset's unit and scale; they are not hostel demand unless the data is."
+  ],
+  "library_versions": {
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.4"
+  }
+}
